@@ -3,35 +3,31 @@ name: Build EXE for Windows
 on:
   push:
     branches:
-      - main  # Jab bhi aap "main" branch par push karein, workflow chalega
+      - main
 
 jobs:
   build:
-    runs-on: windows-latest  # Windows environment me run hoga
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # ✅ Latest Version
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4  # ✅ Latest Version
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.9'  # Python version set karein
+        python-version: '3.9'
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt  # Jo bhi required packages hain, install karega
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
 
-    - name: Install PyInstaller
+    - name: Verify Installed Packages
       run: |
-        pip install pyinstaller  # PyInstaller install karega
+        pip list
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --onefile --windowed manage.py  # .exe file generate karega
-
-    - name: Upload EXE as artifact
-      uses: actions/upload-artifact@v4  # ✅ Latest Version (Fixed)
-      with:
-        name: ISPManagement-exe
-        path: dist/ISPManagement.exe  # Final .exe file upload karega
+        pyinstaller --noconfirm --onefile --console --hidden-import=django --hidden-import=sqlparse manage.py
