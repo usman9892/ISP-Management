@@ -24,10 +24,10 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
 
-    - name: Verify Installed Packages
-      run: |
-        pip list
-
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --noconfirm --onefile --console --hidden-import=django --hidden-import=sqlparse manage.py
+        pyinstaller --noconfirm --onefile --console ^
+          --hidden-import=django --hidden-import=sqlparse ^
+          --hidden-import=isp_management.settings ^
+          --collect-submodules=django ^
+          manage.py
