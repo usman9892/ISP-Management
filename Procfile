@@ -1,0 +1,1 @@
+web: gunicorn isp_management.wsgi:application
