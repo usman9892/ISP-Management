@@ -1,0 +1,37 @@
+name: Build EXE for Windows
+
+on:
+  push:
+    branches:
+      - main  # Jab bhi aap "main" branch par push karein, yeh workflow chalega
+
+jobs:
+  build:
+    runs-on: windows-latest  # Windows environment me run hoga
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # GitHub Repository se code fetch karega
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Python version set karein
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt  # Jo bhi required packages hain, install karega
+
+    - name: Install PyInstaller
+      run: |
+        pip install pyinstaller  # PyInstaller install karega
+
+    - name: Build EXE with PyInstaller
+      run: |
+        pyinstaller --onefile --windowed manage.py  # .exe file generate karega
+
+    - name: Upload EXE as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ISPManagement-exe
+        path: dist/ISPManagement.exe  # Final .exe file upload karega
