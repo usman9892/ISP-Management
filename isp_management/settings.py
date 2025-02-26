@@ -1,17 +1,21 @@
 import os
+import sys
 from pathlib import Path
-import dj_database_url
 
+# BASE_DIR: Project root directory ka absolute path
 BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
 
-# ⚠️ Change this to a strong secret key in production
-SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')
+# Secret Key (⚠️ Production me ENV Variable use karein)
+SECRET_KEY = 'django-insecure-your-secret-key'
 
-DEBUG = False  # ⚠️ Production ke liye False rakhna zaroori hai
+# Debug Mode (⚠️ Production me False rakhein)
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']  # ⚠️ Change this to specific domains in production
+# Allowed Hosts
+ALLOWED_HOSTS = ['*']  # GitHub Actions aur localhost ke liye allow karein
 
-# Installed Apps
+# Installed Applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -19,7 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'isp_management',  # Your Django App
+
+    # Custom Apps
+    'isp_management',  # Aapke project ka main app
 ]
 
 # Middleware
@@ -33,14 +39,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URL Configuration
+# Root URL Configuration
 ROOT_URLCONF = 'isp_management.urls'
 
-# Templates Configuration
+# Templates Settings
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "isp_management/templates"],  # Fix template path
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -56,12 +62,15 @@ TEMPLATES = [
 # WSGI Application
 WSGI_APPLICATION = 'isp_management.wsgi.application'
 
-# 🚨 PostgreSQL Setup (Railway)
+# Database Configuration (SQLite / MySQL / PostgreSQL)
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
-# Password Validators
+# Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -69,15 +78,22 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Localization
+# Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Karachi'  # 🇵🇰 Pakistan timezone
 USE_I18N = True
+USE_L10N = True
 USE_TZ = True
 
-# Static Files
+# Static Files Configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Fix for Railway deployment
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Local static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Collectstatic ke liye
 
-# Default Auto Field
+# Default Primary Key Field Type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ⚡ PyInstaller Compatibility Fix ⚡
+if 'pyinstaller' in sys.modules:
+    import django
+    django.setup()
