@@ -1,0 +1,4 @@
+All Customers
+{% for customer in customers %}
+{{ customer.full_name }} - {{ customer.phone_number }} - Pending: {{ customer.pending_amount }}
+{% endfor %}
