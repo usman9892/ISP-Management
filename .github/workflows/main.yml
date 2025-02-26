@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # Updated version
+      uses: actions/checkout@v4  # ✅ Latest Version
 
     - name: Set up Python
-      uses: actions/setup-python@v4  # Updated version
+      uses: actions/setup-python@v4  # ✅ Latest Version
       with:
         python-version: '3.9'  # Python version set karein
 
@@ -31,7 +31,7 @@ jobs:
         pyinstaller --onefile --windowed manage.py  # .exe file generate karega
 
     - name: Upload EXE as artifact
-      uses: actions/upload-artifact@v3  # ✅ Updated version
+      uses: actions/upload-artifact@v4  # ✅ Latest Version (Fixed)
       with:
         name: ISPManagement-exe
         path: dist/ISPManagement.exe  # Final .exe file upload karega
