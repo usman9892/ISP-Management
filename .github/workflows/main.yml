@@ -25,9 +25,11 @@ jobs:
         pip install pyinstaller
 
     - name: Build EXE with PyInstaller
+      shell: cmd  # ✅ PowerShell se Windows CMD me switch karein
       run: |
-        pyinstaller --noconfirm --onefile --console ^
-          --hidden-import=django --hidden-import=sqlparse ^
-          --hidden-import=isp_management.settings ^
-          --collect-submodules=django ^
+        pyinstaller --noconfirm --onefile --console `
+          --hidden-import=django `
+          --hidden-import=sqlparse `
+          --hidden-import=isp_management.settings `
+          --collect-submodules=django `
           manage.py
