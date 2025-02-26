@@ -3,7 +3,7 @@ name: Build EXE for Windows
 on:
   push:
     branches:
-      - main  # Jab bhi aap "main" branch par push karein, yeh workflow chalega
+      - main  # Jab bhi aap "main" branch par push karein, workflow chalega
 
 jobs:
   build:
@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2  # GitHub Repository se code fetch karega
+      uses: actions/checkout@v3  # Updated version
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4  # Updated version
       with:
         python-version: '3.9'  # Python version set karein
 
@@ -31,7 +31,7 @@ jobs:
         pyinstaller --onefile --windowed manage.py  # .exe file generate karega
 
     - name: Upload EXE as artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3  # ✅ Updated version
       with:
         name: ISPManagement-exe
         path: dist/ISPManagement.exe  # Final .exe file upload karega
